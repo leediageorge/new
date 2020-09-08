@@ -7,18 +7,18 @@
         </div>
         <div class="row">
             <div class="col">
-                <form>
+                <form [formGroup]="loginForm" (ngSubmit)="login()">
                     <div class="form-group">
                         <label for="acno">Account Number</label>
-                        <input [(ngModel)]="acno" name="acnotest" type="text" class="form-control" id="acno" aria-describedby="emailHelp">
+                        <input formControlName="acno" name="acno" type="text" class="form-control" id="acno" aria-describedby="emailHelp">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your Account number with
                             anyone else.</small>
                     </div>
                     <div class="form-group">
                         <label for="pwd">Password</label>
-                        <input [(ngModel)]="pwd" name="pwd" type="password" class="form-control" id="pwd">
+                        <input formControlName="pwd" name="pwd" type="password" class="form-control" id="pwd">
                     </div>
-                    <button type="button" class="btn btn-primary" (click)="login()">Submit</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                     <a routerLink="register">Register</a>
                 </form>
             </div>

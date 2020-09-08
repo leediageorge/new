@@ -16,7 +16,6 @@ export class RegisterComponent implements OnInit {
     pin:['',[ Validators.required ]],
   });
 
-
   constructor(private dataService:DataService,
     private router:Router,
     private fb:FormBuilder) { }
@@ -25,7 +24,7 @@ export class RegisterComponent implements OnInit {
   }
 
   getError(field){
-    return this.registerForm.get(field).errors
+    return (this.registerForm.get(field).touched||this.registerForm.get(field).dirty)&&this.registerForm.get(field).errors;
   }
 
   register(){
