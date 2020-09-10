@@ -11,13 +11,17 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class LoginComponent {
 
   loginForm = this.fb.group({
-    acno:['',[ Validators.required ]],
-    pwd:['',[ Validators.required ]],
+    acno:['1001',[ Validators.required, Validators.pattern("^[0-9]*$") ]],
+    pwd:['userone',[ Validators.required ]],
   });
 
   constructor(private router:Router,
     private dataService: DataService,
     private fb:FormBuilder) { }
+
+  getError(field){
+    return (this.loginForm.get(field).touched||this.loginForm.get(field).dirty)&&this.loginForm.get(field).errors;
+  }
 
   login(){
     if(this.loginForm.valid){

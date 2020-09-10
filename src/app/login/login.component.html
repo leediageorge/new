@@ -13,6 +13,7 @@
                         <input formControlName="acno" name="acno" type="text" class="form-control" id="acno" aria-describedby="emailHelp">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your Account number with
                             anyone else.</small>
+                        <div *ngIf="getError('acno')" class="error">Acno is invalid</div>
                     </div>
                     <div class="form-group">
                         <label for="pwd">Password</label>
