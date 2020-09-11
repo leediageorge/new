@@ -15,6 +15,12 @@ export class DashboardComponent implements OnInit {
     amt:[''],
   });
 
+  withdrawForm = this.fb.group({
+    acno:[''],
+    pin:[''],
+    amt:[''],
+  });
+
   constructor(public dataService:DataService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -32,4 +38,16 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  withdraw(){
+    const result = this.dataService.withdraw(this.withdrawForm.value.acno,
+      this.withdrawForm.value.pin,
+      this.withdrawForm.value.amt);
+    if(result.status==true){
+      alert(result.message);
+      alert(result.balance);
+    }else{
+      alert(result.message);
+      alert(result.balance);
+    }
+  }
 }

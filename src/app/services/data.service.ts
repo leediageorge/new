@@ -6,11 +6,11 @@ import { Injectable } from '@angular/core';
 export class DataService {
 
   accountDetails={
-    1001:{name:"user1", acno:1001, pin:1234, password:'userone', balance:3000},
-    1002:{name:"user2", acno:1002, pin:2345, password:'usertwo', balance:2500},
-    1003:{name:"user3", acno:1003, pin:3456, password:'userthree', balance:3500},
-    1004:{name:"user4", acno:1004, pin:4567, password:'userfour', balance:4000},
-    1005:{name:"user5", acno:1005, pin:5678, password:'userfive', balance:5000},
+    1001:{name:"user1", acno:1001, pin:1234, password:'userone', balance:3000, transactions:[]},
+    1002:{name:"user2", acno:1002, pin:2345, password:'usertwo', balance:2500, transactions:[]},
+    1003:{name:"user3", acno:1003, pin:3456, password:'userthree', balance:3500, transactions:[]},
+    1004:{name:"user4", acno:1004, pin:4567, password:'userfour', balance:4000, transactions:[]},
+    1005:{name:"user5", acno:1005, pin:5678, password:'userfive', balance:5000, transactions:[]},
   }
 
   currentUser;
@@ -25,6 +25,10 @@ export class DataService {
     if(this.currentUser){
       localStorage.setItem("currentUser", JSON.stringify(this.currentUser));
     }
+  }
+
+  getTransactions(){
+    return this.accountDetails[this.currentUser.acno].transactions;
   }
 
   getDetails(){
@@ -46,7 +50,8 @@ export class DataService {
       acno,
       pin,
       password,
-      balance:0
+      balance:0,
+      transactions:[]
     }
     this.saveDetails();
     return true;
@@ -72,6 +77,10 @@ export class DataService {
         var mpin = data[dpacno].pin
         if (dppin==mpin){
             data[dpacno].balance+= parseInt(dpamt);
+            data[dpacno].transactions.push({
+              amount:dpamt,
+              type:'Credit'
+            })
             this.saveDetails();
             return {
               status:true,
@@ -87,26 +96,39 @@ export class DataService {
       }
     }        
 
-}
+  }
 
-static withdraw(){
-    var wacno=document.querySelector("#wacno").value
-    var wpin=document.querySelector("#wpin").value
-    var wamt=Number(document.querySelector("#wamt").value)
-    var data=Bank.getAccountDetails()
-    
+  withdraw(wacno,wpin,wamt){
+    var data=this.accountDetails;
     if (wacno in data){
         var mpin = data[wacno].pin
-        if (wpin==mpin){
-            data[wacno].balance-= wamt
-            alert('account has been debited')
-            alert(data[wacno].balance)
+        if(data[wacno].balance<parseInt(wamt)){
+          return {
+            status:false,
+            message:'Insufficient balance', 
+            balance:data[wacno].balance
+          }
+        }
+        else if (wpin==mpin){
+            data[wacno].balance-= parseInt(wamt)
+            data[wacno].transactions.push({
+              amount:wamt,
+              type:'Debit'
+            })
+            this.saveDetails();
+            return {
+              status:true,
+              message:'account has been debited', 
+              balance:data[wacno].balance
+            }
         }
     }
     else{
-        alert("Incorrect Account Details")
-    }        
-
-}    
+      return {
+        status:false,
+        message:'Incorrect Account Details'
+      }
+    }
+  }    
 
 }

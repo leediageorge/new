@@ -1,6 +1,7 @@
 <div class="container">
     <div class="jumbotron">
         <h1>Welcome {{dataService.currentUser.name}} </h1>
+        <a routerLink="/transaction-history">View Transactions</a>
         <div class="row">
             <div class="col" >
                 <h2>Cash Deposit</h2>
@@ -28,23 +29,25 @@
 
             <div class="col" >
                 <h2>Cash Withdrawal</h2>
+                <form [formGroup]="withdrawForm" (ngSubmit)="withdraw()">
                 <table>
                     <tr>
                         <td>Account No:</td>
-                        <td><input type="text" name="" id="wacno"></td>
+                        <td><input formControlName="acno" type="text" name="wacno" id="wacno"></td>
                     </tr>
                     <tr>
                         <td>Pin</td>
-                        <td><input type="text" name="" id="wpin"></td>
+                        <td><input formControlName="pin" type="text" name="pin" id="wpin"></td>
                     </tr>
                     <tr>
                         <td>Amount</td>
-                        <td><input type="text" name="" id="wamt"></td>
+                        <td><input formControlName="amt" type="text" name="amt" id="wamt"></td>
                     </tr>
                     <tr>
-                        <td colspan="2"> <button type="button" onclick="Bank.withdraw()">Withdraw</button></td>
+                        <td colspan="2"> <button type="submit" >Withdraw</button></td>
                     </tr>
                 </table>
+                </form>
             </div>
 
         </div>
